@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<title>DEMO</title>
+</head>
+<body>
+	<div class="container">
+		<header>
+			<h1>台灣全國高中及大專院校</h1>
+		</header>
+
+		高中：<select id="high_city"></select> <select id="high_name"></select> <br>
+		大專院校：<select id="coll_city"></select> <select id="coll_name"></select>
+
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+		<script src="schools.js"></script>
+		<script>
+		var def_option = '<option> - 請選擇 - </option>';
+
+		function draw_select(city_ele_name, school_ele_name, json)
+		{
+			//default option
+			$(city_ele_name).append(def_option);
+			$(school_ele_name).append(def_option);
+
+			//city
+			for(city in json){
+				$(city_ele_name).append('<option>'+city+'</option>');
+			}
+
+			//name
+			$(city_ele_name).on('change', function(){
+				var city_name = $(this).val();
+				//clear
+				$(school_ele_name).find('option').remove().end();
+				$(school_ele_name).append(def_option);
+				for(var i=0; i < json[city_name].length; i++)
+				{
+					$(school_ele_name).append('<option value="'+json[city_name][i][0]+'">'+json[city_name][i][1]+'</option>');
+				}
+			});
+		}
+
+		$(function(){
+			draw_select('#high_city', '#high_name', tw_high_json);
+			draw_select('#coll_city', '#coll_name', tw_coll_json);
+		})
+		</script>
+
+	</div>
+</body>
+</html>
